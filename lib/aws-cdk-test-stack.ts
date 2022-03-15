@@ -1,16 +1,23 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export class AwsCdkTestStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
+const path = require('path');
 
-    // The code that defines your stack goes here
+export class AwsCdkTestStack extends cdk.Stack {
+	constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+		super(scope, id, props);
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'AwsCdkTestQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
-  }
+		// The code that defines your stack goes here
+
+		// example resource
+		// const queue = new sqs.Queue(this, 'AwsCdkTestQueue', {
+		//   visibilityTimeout: cdk.Duration.seconds(300)
+		// });
+		const fn = new lambda.Function(this, 'MyFunction', {
+			runtime: lambda.Runtime.NODEJS_12_X,
+			handler: 'hello.handler',
+			code: lambda.Code.fromAsset(path.join(__dirname, 'lambda-handler')),
+		});
+	}
 }
