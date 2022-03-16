@@ -4,6 +4,6 @@ exports.handler = async function (event: AWSLambda.APIGatewayEvent) {
     return {
         statusCode: 200,
         headers: { "Content-Type": "text/plain" },
-        body: "Hello, Friends!"
+        body: `Hello, Friends! You've hit path ${event.path}`
     }
 }

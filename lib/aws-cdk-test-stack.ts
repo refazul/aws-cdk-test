@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as apiGateway from '@aws-cdk/aws-apigateway';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 const path = require('path');
@@ -19,5 +20,9 @@ export class AwsCdkTestStack extends cdk.Stack {
 			handler: 'hello.handler',
 			code: lambda.Code.fromAsset(path.join(__dirname, 'lambda-handler')),
 		});
+		
+		new apiGateway.LambdaRestApi(this, "MyEndpoint", {
+			handler: fn
+		})
 	}
 }
