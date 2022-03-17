@@ -3,6 +3,7 @@ package-lock.json
 template.yaml
 event.json
 .env
+build
 
 *.d.ts
 *.js
