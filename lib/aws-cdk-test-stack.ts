@@ -1,6 +1,9 @@
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as apiGateway from '@aws-cdk/aws-apigateway';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as s3Notifications from '@aws-cdk/aws-s3-notifications';
+import * as s3Deployment from '@aws-cdk/aws-s3-deployment';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 const path = require('path');
@@ -23,6 +26,17 @@ export class AwsCdkTestStack extends cdk.Stack {
 		
 		new apiGateway.LambdaRestApi(this, "MyEndpoint", {
 			handler: fn
+		})
+
+		const logoBucket = new s3.Bucket(this, "LogoBucket", {
+			publicReadAccess: true
+		});
+
+		logoBucket.addEventNotification(s3.EventType.OBJECT_CREATED, new s3Notifications.LambdaDestination(fn));
+
+		new s3Deployment.BucketDeployment(this, "DeployLogo", {
+			destinationBucket: logoBucket,
+			sources: [s3Deployment.Source.asset('./assets')]
 		})
 	}
 }
